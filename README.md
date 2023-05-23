@@ -53,7 +53,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-
-See [Configuration Reference](https://create-react-app.dev/docs/advanced-configuration/).
