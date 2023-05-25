@@ -5,25 +5,16 @@
     "browser": true,
     "es6": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "parserOptions": {
-    "ecmaVersion": 2020,
+    "ecmaVersion": 2022,
     "sourceType": "module"
   },
   "rules": {
     "prettier/prettier": "error",
     "no-unreachable": "error",
-    "curly": [
-      "error",
-      "all"
-    ],
-    "eqeqeq": [
-      "error",
-      "smart"
-    ],
+    "curly": ["error", "all"],
+    "eqeqeq": ["error", "smart"],
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -32,27 +23,15 @@
         "peerDependencies": false
       }
     ],
-    "no-shadow": [
-      "error",
-      {
-        "hoist": "all"
-      }
-    ],
+    "no-shadow": ["error", { "hoist": "all" }],
     "prefer-const": "error",
     "import/order": [
       "error",
       {
         "groups": [
-          [
-            "external",
-            "builtin"
-          ],
+          ["external", "builtin"],
           "internal",
-          [
-            "parent",
-            "sibling",
-            "index"
-          ]
+          ["parent", "sibling", "index"]
         ]
       }
     ],
@@ -62,24 +41,13 @@
         "ignoreCase": true,
         "ignoreDeclarationSort": true,
         "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": [
-          "none",
-          "all",
-          "multiple",
-          "single"
-        ]
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
       }
     ],
     "padding-line-between-statements": [
       "error",
-      {
-        "blankLine": "always",
-        "prev": "*",
-        "next": "return"
-      }
+      { "blankLine": "always", "prev": "*", "next": "return" }
     ]
   },
-  "plugins": [
-    "import"
-  ]
+  "plugins": ["import"]
 }

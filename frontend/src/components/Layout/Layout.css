@@ -1,4 +1,4 @@
-.Root-container {
+.Layout-container {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -6,6 +6,6 @@
   color: white;
 }
 
-.Root-content {
+.Layout-content {
   padding: 20px;
 }

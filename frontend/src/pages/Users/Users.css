@@ -7,3 +7,7 @@
 .Users-container > :not(:last-child) {
   margin-bottom: 20px;
 }
+
+.users-loading-error {
+  color: red;
+}
