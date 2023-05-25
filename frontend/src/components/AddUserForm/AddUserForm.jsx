@@ -8,9 +8,12 @@ const DEFAULT_FORM_VALUES = {
   lastname: '',
 };
 
-const useSaveUser = () => {
+function AddUserForm({ onSuccessfulUserCreation }) {
+  const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
+
   const [userCreationError, setUserCreationError] = useState(null);
   const [userCreationSuccess, setUserCreationSuccess] = useState(null);
+
   const displayCreationSuccessMessage = () => {
     setUserCreationSuccess('New user created successfully');
     setTimeout(() => {
@@ -18,22 +21,18 @@ const useSaveUser = () => {
     }, 3000);
   };
 
-  const saveUser = (event, formValues, setFormValues) => {
-    // This avoid page reload
+  const saveUser = (event) => {
+    // This avoid default page reload behavior on form submit
     event.preventDefault();
 
     setUserCreationError(null);
-    if (formValues.email === '') {
-      console.error('Missing email, this field is required');
-
-      return;
-    }
 
     axios
-      .post(`${import.meta.env.VITE_BACKDEND_URL}/users/new`, formValues)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/users/new`, formValues)
       .then(() => {
         displayCreationSuccessMessage();
         setFormValues(DEFAULT_FORM_VALUES);
+        onSuccessfulUserCreation();
       })
       .catch((error) => {
         setUserCreationError('An error occured while creating new user.');
@@ -41,21 +40,12 @@ const useSaveUser = () => {
       });
   };
 
-  return { saveUser, userCreationError, userCreationSuccess };
-};
-
-function AddUserForm() {
-  const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
-  const { saveUser, userCreationError, userCreationSuccess } = useSaveUser();
-
   return (
     <div>
-      <form
-        className="add-user-form"
-        onSubmit={(event) => saveUser(event, formValues, setFormValues)}
-      >
+      <form className="add-user-form" onSubmit={saveUser}>
         <input
           className="add-user-input"
+          required
           type="email"
           placeholder="Email"
           value={formValues.email}

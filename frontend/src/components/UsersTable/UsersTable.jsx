@@ -1,36 +1,16 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './UsersTable.css';
 
-const useFetchUsers = () => {
-  const [users, setUsers] = useState([]);
-  const [usersLoadingError, setUsersLoadingError] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKDEND_URL}/users`)
-      .then((response) => {
-        setUsers(response.data.users);
-      })
-      .catch((error) => {
-        setUsersLoadingError('An error occured while fetching users.');
-        console.error(error);
-      });
-  }, []);
-
-  return { users, usersLoadingError };
-};
-
-function UsersTable() {
-  const { users, usersLoadingError } = useFetchUsers();
-
+function UsersTable({ users, onSuccessfulUserDeletion }) {
   const deleteUser = (userId) => {
-    axios.delete(`${import.meta.env.VITE_BACKDEND_URL}/users/${userId}`);
+    axios
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`)
+      .then(() => onSuccessfulUserDeletion());
   };
 
   return (
     <div>
-      <table>
+      <table className="users-table">
         <thead>
           <tr>
             <th>Email</th>
@@ -51,9 +31,6 @@ function UsersTable() {
           ))}
         </tbody>
       </table>
-      {usersLoadingError !== null && (
-        <div className="users-loading-error">{usersLoadingError}</div>
-      )}
     </div>
   );
 }

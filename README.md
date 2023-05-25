@@ -7,6 +7,13 @@
 ```
 cd backend
 npm install
+cp .env.example .env
+```
+
+### Run database migrations
+
+```
+npm run migration:run
 ```
 
 ### Start and auto-reload for development
