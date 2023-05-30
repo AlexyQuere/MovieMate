@@ -23,8 +23,11 @@ router.post('/new', function (req, res) {
 
   userRepository
     .insert(newUser)
-    .then(function (newDocument) {
-      res.status(201).json(newDocument);
+    .then(function (insertResult) {
+      res.status(201).json({
+        message: 'User successfully created',
+        id: insertResult.identifiers[0].id,
+      });
     })
     .catch(function (error) {
       console.error(error);
