@@ -8,7 +8,7 @@
     "start": "dotenv -- node --experimental-modules ./server.js",
     "lint": "eslint . --fix",
     "migration:generate": "dotenv -- typeorm --dataSource='./datasource.js' migration:generate --outputJs --pretty migrations/$npm_config_name",
-    "postmigration:generate": "./postmigration.sh",
+    "postmigration:generate": "bash ./postmigration.sh",
     "migration:run": "dotenv -- typeorm --dataSource='./datasource.js' migration:run",
     "migration:revert": "dotenv -- typeorm --dataSource='./datasource.js' migration:revert"
   },
@@ -18,7 +18,7 @@
     "express": "^4.18.2",
     "morgan": "^1.10.0",
     "sqlite3": "^5.1.6",
-    "typeorm": "^0.3.12"
+    "typeorm": "^0.3.16"
   },
   "devDependencies": {
     "eslint": "^8.36.0",

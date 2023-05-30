@@ -1,10 +1,8 @@
 # check if a file migration.js exists and if so delete file and then throw error
 
-RED='\033[0;31m'
-
 if [ -e *-migrations.js ]; then
     rm *-migrations.js
-    echo "${RED}You forgot to give your migration file a name. Please run the command again with a --name flag."
+    echo "ERROR: You forgot to give your migration file a name. Please run the command again with a --name=MigrationName flag."
     exit 1
 fi
 
