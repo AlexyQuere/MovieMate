@@ -22,11 +22,11 @@ router.post('/new', function (req, res) {
   });
 
   userRepository
-    .insert(newUser)
-    .then(function (insertResult) {
+    .save(newUser)
+    .then(function (savedUser) {
       res.status(201).json({
         message: 'User successfully created',
-        id: insertResult.identifiers[0].id,
+        id: savedUser.id,
       });
     })
     .catch(function (error) {
