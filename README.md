@@ -1,4 +1,4 @@
-# MovieMate
+# Movie Mate
 
 ## Backend
 
