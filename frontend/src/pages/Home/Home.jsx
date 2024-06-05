@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './Home.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'; // Make sure to import axios if you're using it
+import Movie from '../../components/Movie/Movie';
 
-function Home() {
+const Home = ({ checkedValue }) => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/movies/genre/${checkedValue}`)
+      .then((response) => {
+        console.log(response);
+        setMovies(response.data.movies);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la récupération des films:', error);
+      });
+  }, [checkedValue]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://react.dev"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Films {checkedValue}</h1>
+      <ul>
+        {movies.map((movie) => (
+          <Movie key={movie.id} movie={movie} />
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
 export default Home;
