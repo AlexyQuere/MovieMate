@@ -20,12 +20,12 @@ const liked = new EntitySchema({
       joinColumn: true,
       nullable: false,
     },
-    movie: {
-      type: 'many-to-one',
-      target: 'Movie',
-      joinColumn: true,
-      nullable: false,
-    },
+    // movie: {
+    //   type: 'many-to-one',
+    //   target: 'Movie',
+    //   joinColumn: true,
+    //   nullable: false,
+    // },
   },
 });
 
