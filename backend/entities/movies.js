@@ -30,24 +30,22 @@ const Movie = new EntitySchema({
       type: 'many-to-many',
       target: 'Genre',
       inverseSide: 'movies',
-      joinTable: true,
     },
     actors: {
       type: 'many-to-many',
       target: 'Actor',
       inverseSide: 'movies',
-      joinTable: true,
     },
     director: {
       type: 'many-to-one',
       target: 'Director',
       inverseSide: 'movies',
     },
-    ratings: {
-      type: 'one-to-many',
-      target: 'Rating',
-      inverseSide: 'movie',
-    },
+    // ratings: {
+    //   type: 'one-to-many',
+    //   target: 'Rating',
+    //   inverseSide: 'movie',
+    // },
   },
 });
 

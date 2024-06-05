@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   appDataSource
     .getRepository(Movie)
-    .find({ relations: ['genres', 'actors', 'director', 'ratings'] })
+    .find({ relations: ['genres', 'actors', 'director'] })
     .then((movies) => {
       res.json({ movies: movies });
     })
