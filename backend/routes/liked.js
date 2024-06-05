@@ -8,69 +8,47 @@ import Rating from '../entities/liked.js';
 const router = express.Router();
 
 // Route to like or change the rating for a movie
-router.post('/:movieId', (req, res) => {
+router.post('/:movieId', async (req, res) => {
   const movieRepository = appDataSource.getRepository(Movie);
   const ratingRepository = appDataSource.getRepository(Rating);
   const movieId = req.params.movieId;
   const userId = req.body.userId;
-  const ratingValue = req.body.rating;
+  const likeValue = req.body.Like;
 
-  movieRepository
-    .findOne(movieId)
-    .then((movie) => {
-      if (!movie) {
-        res.status(404).json({ message: 'Movie not found' });
-      } else {
-        // Check if the user has already rated the movie
-        ratingRepository
-          .findOne({ where: { movie: movieId, user: userId } })
-          .then((existingRating) => {
-            if (existingRating) {
-              // If the user has already rated, update the rating
-              existingRating.rating = ratingValue;
-              ratingRepository
-                .save(existingRating)
-                .then(() => {
-                  res.json({ message: 'Rating updated successfully' });
-                })
-                .catch((error) => {
-                  console.error(error);
-                  res
-                    .status(500)
-                    .json({ message: 'Error while updating rating' });
-                });
-            } else {
-              // If the user has not rated, create a new rating
-              const newRating = ratingRepository.create({
-                user: userId,
-                movie: movieId,
-                rating: ratingValue,
-              });
-              ratingRepository
-                .save(newRating)
-                .then(() => {
-                  res.json({ message: 'Rating added successfully' });
-                })
-                .catch((error) => {
-                  console.error(error);
-                  res
-                    .status(500)
-                    .json({ message: 'Error while adding rating' });
-                });
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            res
-              .status(500)
-              .json({ message: 'Error while checking existing rating' });
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ message: 'Error while fetching the movie' });
+  try {
+    // Find the movie
+    const movie = await movieRepository.findOneBy({ id: movieId });
+    if (!movie) {
+      res.status(404).json({ message: 'Movie not found' });
+
+      return;
+    }
+
+    // Find the existing like for the user and movie
+    const existingLike = await ratingRepository.findOneBy({
+      movie: { id: movieId },
+      user: { id: userId },
     });
+
+    if (existingLike) {
+      // If the user has already liked, update the like
+      existingLike.Like = likeValue; // Changed from rating to like
+      await ratingRepository.save(existingLike);
+      res.json({ message: 'Like updated successfully' }); // Changed from Rating to Like
+    } else {
+      // If the user has not liked, create a new like
+      const newLike = ratingRepository.create({
+        user: { id: userId },
+        movie: { id: movieId },
+        Like: likeValue, // Ensure the 'Like' field is properly set
+      });
+      await ratingRepository.save(newLike);
+      res.json({ message: 'Like added successfully' }); // Changed from Rating to Like
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error while updating/adding like' }); // Changed from Rating to Like
+  }
 });
 
 export default router;
