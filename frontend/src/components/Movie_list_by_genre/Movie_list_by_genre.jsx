@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Make sure to import axios if you're using it
-import Movie from '../../components/Movie/Movie';
+import Movie from '../Movie/Movie';
 
-const Home = ({ checkedValue }) => {
+const Movie_list_by_genre = ({ checkedValue }) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -29,4 +29,4 @@ const Home = ({ checkedValue }) => {
   );
 };
 
-export default Home;
+export default Movie_list_by_genre;
