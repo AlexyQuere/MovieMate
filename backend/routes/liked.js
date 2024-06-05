@@ -2,13 +2,13 @@
 import express from 'express';
 import { appDataSource } from '../datasource.js';
 import Movie from '../entities/movies.js';
-import Rating from '../entities/rating.js';
+import Rating from '../entities/liked.js';
 
 // Create a new router
 const router = express.Router();
 
 // Route to like or change the rating for a movie
-router.post('/:movieId/like', (req, res) => {
+router.post('/:movieId', (req, res) => {
   const movieRepository = appDataSource.getRepository(Movie);
   const ratingRepository = appDataSource.getRepository(Rating);
   const movieId = req.params.movieId;
