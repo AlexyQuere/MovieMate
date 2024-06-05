@@ -1,8 +1,10 @@
 // Import necessary modules
 import express from 'express';
-import { Like } from 'typeorm';
 import { appDataSource } from '../datasource.js';
-import Movie from '../entities/movies2.js';
+import Movie from '../entities/movies.js';
+import Genre from '../entities/genre.js';
+import Actor from '../entities/actor.js';
+import Director from '../entities/director.js';
 
 // Create a new router
 const router = express.Router();
@@ -11,7 +13,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   appDataSource
     .getRepository(Movie)
-    .find({})
+    .find({ relations: ['genres', 'actors', 'director'] })
     .then((movies) => {
       res.json({ movies: movies });
     })
@@ -23,13 +25,17 @@ router.get('/', (req, res) => {
 
 // Route to get movies by genre
 router.get('/genre/:genre', (req, res) => {
-  const genre = req.params.genre;
+  const genreName = req.params.genre;
 
   appDataSource
-    .getRepository(Movie)
-    .find({ where: { genre: Like(`%${genre}%`) } })
-    .then((movies) => {
-      res.json({ movies: movies });
+    .getRepository(Genre)
+    .findOne({ where: { name: genreName }, relations: ['movies'] })
+    .then((genre) => {
+      if (genre) {
+        res.json({ movies: genre.movies });
+      } else {
+        res.status(404).json({ message: 'Genre not found' });
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -40,26 +46,70 @@ router.get('/genre/:genre', (req, res) => {
 // Route to add a new movie
 router.post('/new', (req, res) => {
   const movieRepository = appDataSource.getRepository(Movie);
-  console.log(req.body);
-  const newMovie = movieRepository.create({
-    name: req.body.name,
-    date: req.body.date,
-    image: req.body.image,
-    genre: req.body.genre,
-    rating: req.body.rating,
-  });
+  const genreRepository = appDataSource.getRepository(Genre);
+  const actorRepository = appDataSource.getRepository(Actor);
+  const directorRepository = appDataSource.getRepository(Director);
 
-  movieRepository
-    .save(newMovie)
-    .then((savedMovie) => {
-      res.status(201).json({
-        message: 'Movie successfully added',
-        id: savedMovie.id,
+  const { name, date, image, rating, genres, actors, directorId } = req.body;
+
+  // Find director
+  directorRepository
+    .findOne({ id: directorId })
+    .then((director) => {
+      if (!director) {
+        throw new Error('Director not found');
+      }
+
+      // Create new movie
+      const newMovie = movieRepository.create({
+        name,
+        date,
+        image,
+        rating,
+        director,
       });
+
+      // Add genres
+      genreRepository
+        .findByIds(genres)
+        .then((foundGenres) => {
+          newMovie.genres = foundGenres;
+
+          // Add actors
+          actorRepository
+            .findByIds(actors)
+            .then((foundActors) => {
+              newMovie.actors = foundActors;
+
+              // Save movie
+              movieRepository
+                .save(newMovie)
+                .then((savedMovie) => {
+                  res.status(201).json({
+                    message: 'Movie successfully added',
+                    id: savedMovie.id,
+                  });
+                })
+                .catch((error) => {
+                  console.error(error);
+                  res
+                    .status(500)
+                    .json({ message: 'Error while creating the movie' });
+                });
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).json({ message: 'Error while finding actors' });
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({ message: 'Error while finding genres' });
+        });
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).json({ message: 'Error while creating the movie' });
+      res.status(500).json({ message: 'Error while finding director' });
     });
 });
 
@@ -69,7 +119,10 @@ router.get('/:id', (req, res) => {
   const movieId = req.params.id;
 
   movieRepository
-    .findOneBy({ id: movieId })
+    .findOne({
+      where: { id: movieId },
+      relations: ['genres', 'actors', 'director'],
+    })
     .then((movie) => {
       if (movie) {
         res.status(200).json(movie);
@@ -89,7 +142,7 @@ router.delete('/:id', (req, res) => {
   const movieId = req.params.id;
 
   movieRepository
-    .findOneBy({ id: movieId })
+    .findOne({ where: { id: movieId } })
     .then((movie) => {
       if (movie) {
         movieRepository
