@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   appDataSource
     .getRepository(Movie)
-    .find({ relations: ['genres', 'actors', 'director'] })
+    .find({ relations: ['genres', 'actors', 'director', 'ratings'] })
     .then((movies) => {
       res.json({ movies: movies });
     })
@@ -44,73 +44,74 @@ router.get('/genre/:genre', (req, res) => {
 });
 
 // Route to add a new movie
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const movieRepository = appDataSource.getRepository(Movie);
   const genreRepository = appDataSource.getRepository(Genre);
   const actorRepository = appDataSource.getRepository(Actor);
   const directorRepository = appDataSource.getRepository(Director);
 
-  const { name, date, image, rating, genres, actors, directorId } = req.body;
+  const {
+    name,
+    releasedate,
+    image,
+    globalrating,
+    synopsis,
+    genreIds,
+    actorIds,
+    directorId,
+  } = req.body;
 
-  // Find director
-  directorRepository
-    .findOne({ id: directorId })
-    .then((director) => {
-      if (!director) {
-        throw new Error('Director not found');
-      }
-
-      // Create new movie
-      const newMovie = movieRepository.create({
-        name,
-        date,
-        image,
-        rating,
-        director,
-      });
-
-      // Add genres
-      genreRepository
-        .findByIds(genres)
-        .then((foundGenres) => {
-          newMovie.genres = foundGenres;
-
-          // Add actors
-          actorRepository
-            .findByIds(actors)
-            .then((foundActors) => {
-              newMovie.actors = foundActors;
-
-              // Save movie
-              movieRepository
-                .save(newMovie)
-                .then((savedMovie) => {
-                  res.status(201).json({
-                    message: 'Movie successfully added',
-                    id: savedMovie.id,
-                  });
-                })
-                .catch((error) => {
-                  console.error(error);
-                  res
-                    .status(500)
-                    .json({ message: 'Error while creating the movie' });
-                });
-            })
-            .catch((error) => {
-              console.error(error);
-              res.status(500).json({ message: 'Error while finding actors' });
-            });
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).json({ message: 'Error while finding genres' });
-        });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ message: 'Error while finding director' });
+  try {
+    // Find director
+    const directors = await directorRepository.find({
+      where: { id: directorId },
     });
+    if (directors.length === 0) {
+      res.status(404).json({ message: 'Director not found' });
+
+      return;
+    }
+    const director = directors[0];
+
+    // Find genres
+    const foundGenres = await genreRepository.findByIds(genreIds);
+    if (foundGenres.length !== genreIds.length) {
+      res.status(404).json({ message: 'One or more genres not found' });
+
+      return;
+    }
+
+    // Find actors
+    const foundActors = await actorRepository.findByIds(actorIds);
+    if (foundActors.length !== actorIds.length) {
+      res.status(404).json({ message: 'One or more actors not found' });
+
+      return;
+    }
+
+    // Create new movie
+    const newMovie = movieRepository.create({
+      name,
+      releasedate,
+      image,
+      globalrating,
+      synopsis,
+      director,
+      genres: foundGenres,
+      actors: foundActors,
+    });
+
+    // Save movie
+    const savedMovie = await movieRepository.save(newMovie);
+
+    res.status(201).json({
+      message: 'Movie successfully added',
+      id: savedMovie.id,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error while creating the movie' });
+  }
 });
 
 // Route to get a movie by its ID
@@ -121,7 +122,7 @@ router.get('/:id', (req, res) => {
   movieRepository
     .findOne({
       where: { id: movieId },
-      relations: ['genres', 'actors', 'director'],
+      relations: ['genres', 'actors', 'director', 'ratings'],
     })
     .then((movie) => {
       if (movie) {

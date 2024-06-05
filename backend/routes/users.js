@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
     });
 });
 
-router.post('/new', function (req, res) {
+router.post('/', function (req, res) {
   const userRepository = appDataSource.getRepository(User);
   const newUser = userRepository.create({
     email: req.body.email,

@@ -30,7 +30,7 @@ appDataSource
     app.use('/movies', moviesRouter);
     app.use('/actors', actorsRouter);
     app.use('/directors', directorsRouter);
-    app.use('/genre', genreRouter);
+    app.use('/genres', genreRouter);
     app.use('/liked', likedRouter);
 
     // Register 404 middleware and error handler
