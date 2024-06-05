@@ -3,8 +3,8 @@ import express from 'express';
 import { appDataSource } from '../datasource.js';
 import Movie from '../entities/movies.js';
 import Genre from '../entities/genre.js';
-import Actor from '../entities/actor.js';
-import Director from '../entities/director.js';
+import Actor from '../entities/actors.js';
+import Director from '../entities/directors.js';
 
 // Create a new router
 const router = express.Router();
@@ -44,7 +44,7 @@ router.get('/genre/:genre', (req, res) => {
 });
 
 // Route to add a new movie
-router.post('/new', (req, res) => {
+router.post('/', (req, res) => {
   const movieRepository = appDataSource.getRepository(Movie);
   const genreRepository = appDataSource.getRepository(Genre);
   const actorRepository = appDataSource.getRepository(Actor);
