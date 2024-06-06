@@ -79,7 +79,9 @@ async function populateDatabase() {
     movie.globalrating = movieDetails.vote_average;
     movie.synopsis = movieDetails.overview;
 
-    await movieRepository.save(movie);
+    // Initialize empty arrays for relations
+    movie.genres = [];
+    movie.actors = [];
 
     // Handle genres
     for (const genreData of movieDetails.genres) {
@@ -92,7 +94,9 @@ async function populateDatabase() {
         genre.name = genreData.name;
         await genreRepository.save(genre);
       }
-      movie.genres = [...(movie.genres || []), genre];
+      if (!movie.genres.some((g) => g.id === genre.id)) {
+        movie.genres.push(genre);
+      }
     }
 
     // Handle actors
@@ -104,7 +108,9 @@ async function populateDatabase() {
         actor.name = castData.name;
         await actorRepository.save(actor);
       }
-      movie.actors = [...(movie.actors || []), actor];
+      if (!movie.actors.some((a) => a.id === actor.id)) {
+        movie.actors.push(actor);
+      }
     }
 
     // Handle director
