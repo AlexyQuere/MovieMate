@@ -1,0 +1,28 @@
+.global {
+  display: flex;
+  flex-direction: column;
+  gap: 7rem;
+}
+
+.title {
+  width: 62%;
+  font-size: 9rem;
+  margin-left: 10rem;
+  font-weight: 600;
+  margin-top: 3rem;
+}
+
+.button {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: white;
+  margin: auto;
+  width: 13rem;
+  background: black;
+  border-radius: 30px;
+  margin: 0 auto;
+  height: 3rem;
+}

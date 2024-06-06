@@ -5,11 +5,13 @@ import Layout from './components/Layout/Layout';
 import Counter from './pages/Counter/Counter';
 import Users from './pages/Users/Users';
 import { Movieinfo } from './pages/Movieinfo/Movieinfo';
+import Home from './pages/Home/Home';
 
 function App() {
   return (
     <Layout>
       <Routes>
+        <Route path="" element={<Home />} />
         <Route path="/movies" element={<Movie_by_genre />} />
         <Route path="/movies/:movieId" element={<Movieinfo />} />
         <Route path="counter" element={<Counter />} />
