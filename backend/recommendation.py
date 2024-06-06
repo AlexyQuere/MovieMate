@@ -1,6 +1,8 @@
-from typing import List, Dict, Any, Set
+from typing import List, Dict, Any
 import requests
 import random
+import sys
+import json
 
 BASE_URL = 'http://localhost:8000/movies'
 
@@ -8,10 +10,14 @@ def fetch_popular_movies() -> List[Dict[str, Any]]:
     """
     Fetch popular movies from the API.
     """
-    response = requests.get(f'{BASE_URL}?limit=200')  # Assuming the API supports limiting results
-    response.raise_for_status()
-    data = response.json()
-    return data['movies']  # Assuming the key is 'movies'
+    try:
+        response = requests.get(f'{BASE_URL}?limit=200')
+        response.raise_for_status()
+        data = response.json()
+        return data['movies']
+    except Exception as e:
+        print(f"Erreur lors de la récupération des films populaires: {e}", file=sys.stderr)
+        sys.exit(1)
 
 def prepare_movie_data(movies: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
@@ -22,10 +28,10 @@ def prepare_movie_data(movies: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         movie_data.append({
             'id': movie['id'],
             'name': movie['name'],
-            'genres': [genre['id'] for genre in movie['genres']],  # List of genre IDs
-            'rating': movie['globalrating'],  # Rating of the movie
-            'directors': [movie['director']['id']] if movie['director'] else [],  # Director ID if available
-            'actors': [actor['id'] for actor in movie['actors']]  # List of actor IDs
+            'genres': [genre['id'] for genre in movie['genres']],
+            'rating': movie.get('globalrating', 0),
+            'directors': [movie['director']['id']] if movie['director'] else [],
+            'actors': [actor['id'] for actor in movie['actors']]
         })
     return movie_data
 
@@ -42,7 +48,7 @@ def recommend_movies(user_ratings: Dict[int, bool], movies: List[Dict[str, Any]]
     user_actors_low = set()
     added_movie_ids = set()
 
-    # Update sets based on user's ratings
+    # Utiliser les feedbacks de l'utilisateur pour ajuster les scores des films
     for movie_id, user_rating in user_ratings.items():
         for movie in movies:
             if movie['id'] == movie_id:
@@ -55,7 +61,6 @@ def recommend_movies(user_ratings: Dict[int, bool], movies: List[Dict[str, Any]]
                     user_directors_low.update(movie['directors'])
                     user_actors_low.update(movie['actors'])
 
-    # Generate recommendations based on user preferences
     for movie in movies:
         if movie['id'] not in user_ratings and movie['id'] not in added_movie_ids:
             common_genres_high = user_genres_high.intersection(set(movie['genres']))
@@ -81,34 +86,24 @@ def recommend_movies(user_ratings: Dict[int, bool], movies: List[Dict[str, Any]]
     recommendations.sort(key=lambda x: x['score'], reverse=True)
     return recommendations[:num_recommendations]
 
-def get_random_movies(movies: List[Dict[str, Any]], num_samples: int = 10) -> List[Dict[str, Any]]:
-    """
-    Get a random selection of movies.
-    """
-    return random.sample(movies, num_samples)
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) < 2:
+            raise ValueError("Not enough arguments provided. Expected 'recommend'.")
 
-def get_user_feedback_for_movies(movies: List[Dict[str, Any]]) -> Dict[int, bool]:
-    """
-    Simulate getting user feedback for a list of movies.
-    """
-    user_ratings = {}
-    for movie in movies:
-        print(f"Do you like the movie '{movie['name']}'? (y/n)")
-        response = input().strip().lower()
-        user_ratings[movie['id']] = (response == 'y')
-    return user_ratings
+        action = sys.argv[1]
 
-# Main execution
-popular_movies = fetch_popular_movies()
-movie_data = prepare_movie_data(popular_movies)
-
-# Select 10 random movies from the top 200 to get user feedback
-random_movies = get_random_movies(movie_data, 10)
-print("Please rate the following movies:")
-
-user_ratings = get_user_feedback_for_movies(random_movies)
-
-recommendations = recommend_movies(user_ratings, movie_data)
-print("\nRecommended Movies:")
-for rec in recommendations:
-    print(f"Recommended Movie ID: {rec['id']}, Title: {rec['name']}, Score: {rec['score']}")
+        if action == "recommend":
+            if len(sys.argv) < 3:
+                raise ValueError("Not enough arguments for 'recommend' action. Expected user ratings JSON.")
+            
+            print(f"Arguments reçus pour 'recommend': {sys.argv[2]}", file=sys.stderr)
+            user_ratings = json.loads(sys.argv[2])
+            popular_movies = fetch_popular_movies()
+            movie_data = prepare_movie_data(popular_movies)
+            recommendations = recommend_movies(user_ratings, movie_data)
+            print(recommendations)
+            print(json.dumps(recommendations))
+        
+    except Exception as e:
+        print(json.dumps({"error": str(e)}))
