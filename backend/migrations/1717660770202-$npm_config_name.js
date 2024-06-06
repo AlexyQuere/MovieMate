@@ -2,8 +2,8 @@ import typeorm from "typeorm";
 
 const { MigrationInterface, QueryRunner } = typeorm;
 
-export default class Migrations1717600741035 {
-    name = 'Migrations1717600741035'
+export default class  $npmConfigName1717660770202 {
+    name = ' $npmConfigName1717660770202'
 
     async up(queryRunner) {
         await queryRunner.query(`
@@ -26,13 +26,6 @@ export default class Migrations1717600741035 {
             )
         `);
         await queryRunner.query(`
-            CREATE TABLE "rating" (
-                "id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-                "Like" boolean NOT NULL,
-                "userId" integer NOT NULL
-            )
-        `);
-        await queryRunner.query(`
             CREATE TABLE "movie" (
                 "id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                 "name" varchar NOT NULL,
@@ -40,6 +33,7 @@ export default class Migrations1717600741035 {
                 "image" varchar NOT NULL,
                 "globalrating" integer,
                 "synopsis" varchar NOT NULL,
+                "isliked" boolean,
                 "directorId" integer
             )
         `);
@@ -79,28 +73,6 @@ export default class Migrations1717600741035 {
             CREATE INDEX "IDX_e59764a417d4f8291747b744fa" ON "genre_movies_movie" ("movieId")
         `);
         await queryRunner.query(`
-            CREATE TABLE "temporary_rating" (
-                "id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-                "Like" boolean NOT NULL,
-                "userId" integer NOT NULL,
-                CONSTRAINT "FK_a6c53dfc89ba3188b389ef29a62" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION
-            )
-        `);
-        await queryRunner.query(`
-            INSERT INTO "temporary_rating"("id", "Like", "userId")
-            SELECT "id",
-                "Like",
-                "userId"
-            FROM "rating"
-        `);
-        await queryRunner.query(`
-            DROP TABLE "rating"
-        `);
-        await queryRunner.query(`
-            ALTER TABLE "temporary_rating"
-                RENAME TO "rating"
-        `);
-        await queryRunner.query(`
             CREATE TABLE "temporary_movie" (
                 "id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
                 "name" varchar NOT NULL,
@@ -108,6 +80,7 @@ export default class Migrations1717600741035 {
                 "image" varchar NOT NULL,
                 "globalrating" integer,
                 "synopsis" varchar NOT NULL,
+                "isliked" boolean,
                 "directorId" integer,
                 CONSTRAINT "FK_a32a80a88aff67851cf5b75d1cb" FOREIGN KEY ("directorId") REFERENCES "director" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION
             )
@@ -120,6 +93,7 @@ export default class Migrations1717600741035 {
                     "image",
                     "globalrating",
                     "synopsis",
+                    "isliked",
                     "directorId"
                 )
             SELECT "id",
@@ -128,6 +102,7 @@ export default class Migrations1717600741035 {
                 "image",
                 "globalrating",
                 "synopsis",
+                "isliked",
                 "directorId"
             FROM "movie"
         `);
@@ -285,6 +260,7 @@ export default class Migrations1717600741035 {
                 "image" varchar NOT NULL,
                 "globalrating" integer,
                 "synopsis" varchar NOT NULL,
+                "isliked" boolean,
                 "directorId" integer
             )
         `);
@@ -296,6 +272,7 @@ export default class Migrations1717600741035 {
                     "image",
                     "globalrating",
                     "synopsis",
+                    "isliked",
                     "directorId"
                 )
             SELECT "id",
@@ -304,32 +281,12 @@ export default class Migrations1717600741035 {
                 "image",
                 "globalrating",
                 "synopsis",
+                "isliked",
                 "directorId"
             FROM "temporary_movie"
         `);
         await queryRunner.query(`
             DROP TABLE "temporary_movie"
-        `);
-        await queryRunner.query(`
-            ALTER TABLE "rating"
-                RENAME TO "temporary_rating"
-        `);
-        await queryRunner.query(`
-            CREATE TABLE "rating" (
-                "id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-                "Like" boolean NOT NULL,
-                "userId" integer NOT NULL
-            )
-        `);
-        await queryRunner.query(`
-            INSERT INTO "rating"("id", "Like", "userId")
-            SELECT "id",
-                "Like",
-                "userId"
-            FROM "temporary_rating"
-        `);
-        await queryRunner.query(`
-            DROP TABLE "temporary_rating"
         `);
         await queryRunner.query(`
             DROP INDEX "IDX_e59764a417d4f8291747b744fa"
@@ -354,9 +311,6 @@ export default class Migrations1717600741035 {
         `);
         await queryRunner.query(`
             DROP TABLE "movie"
-        `);
-        await queryRunner.query(`
-            DROP TABLE "rating"
         `);
         await queryRunner.query(`
             DROP TABLE "genre"
