@@ -2,24 +2,31 @@ import './Movieinfo.css';
 
 const Movie = ({ movie }) => {
   const actors = movie.actors.slice(0, 3).map((actor) => actor.name);
+
   const releaseYear = new Date(movie.releasedate).getFullYear();
 
+  const actorsString = actors.join(', ');
+  const genresString = movie.genres.map((genre) => genre.name).join(', ');
+
   return (
-    <div>
-      <img
-        src={`https://image.tmdb.org/t/p/original/${movie.image}`}
-        alt={movie.name}
-      />
-      <h1>{movie.name}</h1>
-      <h2>Release Year: {releaseYear}</h2>
-      <h2>Director: {movie.director.name}</h2>
-      <h3>Synopsis: {movie.synopsis}</h3>
-      <h3>Actors:</h3>
-      <ul>
-        {actors.map((actor, index) => (
-          <li key={index}>{actor}</li>
-        ))}
-      </ul>
+    <div className="global">
+      <div className="movieinfo">
+        <div className="titledirector">
+          <h1>
+            {movie.name} ({releaseYear})
+          </h1>
+          <h2 className="director">by {movie.director.name}</h2>
+        </div>
+        <h2>Actors: {actorsString}</h2>
+        <h2>Genres: {genresString}</h2>
+        <h3>{movie.synopsis}</h3>
+      </div>
+      <div className="movieimage">
+        <img
+          src={`https://image.tmdb.org/t/p/original/${movie.image}`}
+          alt={movie.name}
+        />
+      </div>
     </div>
   );
 };
