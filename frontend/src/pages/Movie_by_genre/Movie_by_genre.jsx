@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Movie_genre from '../../components/Movie_genre/Movie_genre';
+import Movie_genre from '../../components/Moviegenrecheckbox/Moviegenrecheckbox';
 import Movie_list_by_genre from '../../components/Movie_list_by_genre/Movie_list_by_genre';
 
 const Movie_by_genre = () => {
