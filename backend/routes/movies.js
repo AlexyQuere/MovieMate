@@ -122,7 +122,7 @@ router.get('/:id', (req, res) => {
   movieRepository
     .findOne({
       where: { id: movieId },
-      relations: ['genres', 'actors', 'director', 'ratings'],
+      relations: ['genres', 'actors', 'director'],
     })
     .then((movie) => {
       if (movie) {
