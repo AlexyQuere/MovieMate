@@ -1,9 +1,7 @@
 body {
   margin: 0;
   font-family: ClashDisplay;
-  font-weight: 500;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-decoration: none;
 }
 
 code {
