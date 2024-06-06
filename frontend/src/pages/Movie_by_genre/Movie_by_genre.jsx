@@ -6,7 +6,7 @@ const Movie_by_genre = () => {
   const [checkedValue, setCheckedValue] = useState('');
 
   return (
-    <div className="global">
+    <div className="movielist">
       <div className="Genrelist">
         <Movie_genre setCheckedValue={setCheckedValue} />
       </div>

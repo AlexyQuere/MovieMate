@@ -9,7 +9,7 @@ const Movie = ({ movie }) => {
   const genresString = movie.genres.map((genre) => genre.name).join(', ');
 
   return (
-    <div className="global">
+    <div className="movieinfobox">
       <div className="movieinfo">
         <div className="titledirector">
           <h1>
