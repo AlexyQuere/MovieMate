@@ -24,6 +24,10 @@ const Movie = new EntitySchema({
     synopsis: {
       type: String,
     },
+    isliked: {
+      type: Boolean,
+      nullable: true,
+    },
   },
   relations: {
     genres: {
@@ -41,11 +45,6 @@ const Movie = new EntitySchema({
       target: 'Director',
       inverseSide: 'movies',
     },
-    // ratings: {
-    //   type: 'one-to-many',
-    //   target: 'Rating',
-    //   inverseSide: 'movie',
-    // },
   },
 });
 

@@ -165,4 +165,35 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+// Route to toggle the isliked option for a movie
+router.patch('/liked/:id', async (req, res) => {
+  const movieRepository = appDataSource.getRepository(Movie);
+  const movieId = req.params.id;
+
+  try {
+    // Find the movie by id
+    const movie = await movieRepository.findOne({ where: { id: movieId } });
+
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    // Toggle the isliked property
+    movie.isliked = !movie.isliked;
+
+    // Save the updated movie
+    const updatedMovie = await movieRepository.save(movie);
+
+    res.status(200).json({
+      message: 'Movie like status successfully updated',
+      movie: updatedMovie,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: 'Error while updating the movie like status' });
+  }
+});
+
 export default router;
