@@ -40,7 +40,7 @@ const Movie_list_by_genre = ({ checkedValue }) => {
   };
 
   return (
-    <div>
+    <div className="presentation">
       <div className="search">
         <svg
           xmlns="http://www.w3.org/2000/svg"
