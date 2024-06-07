@@ -8,8 +8,8 @@ const Movie = ({ movie }) => {
           src={`https://image.tmdb.org/t/p/original/${movie.image}`}
           alt={movie.name}
         />
-        <h2>{movie.name}</h2>
       </a>
+      <h2>{movie.name}</h2>
     </div>
   );
 };
