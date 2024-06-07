@@ -3,6 +3,7 @@ body {
   font-family: ClashDisplay;
   text-decoration: none;
   color: white;
+  height: 100vh;
 }
 
 code {

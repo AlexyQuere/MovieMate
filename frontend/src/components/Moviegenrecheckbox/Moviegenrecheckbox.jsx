@@ -41,22 +41,24 @@ const CheckboxExample = ({ setCheckedValue }) => {
   return (
     <div className="checkbox-container">
       <h1>Genre</h1>
-      {Array.isArray(genres) ? (
-        genres.map((genre) => (
-          <div key={genre.id}>
-            <input
-              type="checkbox"
-              id={genre.name}
-              name={genre.name}
-              checked={!!checkedValues[genre.name]}
-              onChange={handleCheckboxChange}
-            />
-            <label htmlFor={genre.name}>{genre.name}</label>
-          </div>
-        ))
-      ) : (
-        <div>No genres available</div>
-      )}
+      <div className="checkbox-list">
+        {Array.isArray(genres) ? (
+          genres.map((genre) => (
+            <div key={genre.id}>
+              <input
+                type="checkbox"
+                id={genre.name}
+                name={genre.name}
+                checked={!!checkedValues[genre.name]}
+                onChange={handleCheckboxChange}
+              />
+              <label htmlFor={genre.name}>{genre.name}</label>
+            </div>
+          ))
+        ) : (
+          <div>No genres available</div>
+        )}
+      </div>
     </div>
   );
 };
