@@ -17,7 +17,7 @@ const Header = () => {
           DISCOVER
         </Link>
 
-        <Link className="Link" to="/users">
+        <Link className="Link" to="/recommendations">
           FIND YOUR MOVIE
         </Link>
       </div>
