@@ -91,7 +91,7 @@ const MovieRecommendations = () => {
         <div>
           <h2>{movies[currentMovieIndex].name}</h2>
           <img
-            src={movies[currentMovieIndex].image}
+            src={`https://image.tmdb.org/t/p/original/${movies[currentMovieIndex].image}`}
             alt={movies[currentMovieIndex].name}
             style={{ width: '300px', height: '450px' }}
           />
