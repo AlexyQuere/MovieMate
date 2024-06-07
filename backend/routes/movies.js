@@ -1,46 +1,41 @@
-// Import necessary modules
 import express from 'express';
 import { appDataSource } from '../datasource.js';
 import Movie from '../entities/movies.js';
-import Genre from '../entities/genre.js';
-import Actor from '../entities/actors.js';
 import Director from '../entities/directors.js';
-
-// Create a new router
+import Actor from '../entities/actors.js';
+import Genre from '../entities/genre.js';
 const router = express.Router();
 
 // Route to get all movies
-router.get('/', (req, res) => {
-  appDataSource
-    .getRepository(Movie)
-    .find({ relations: ['genres', 'actors', 'director'] })
-    .then((movies) => {
-      res.json({ movies: movies });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ message: 'Error while fetching movies' });
-    });
+router.get('/', async (req, res) => {
+  try {
+    const movies = await appDataSource
+      .getRepository(Movie)
+      .find({ relations: ['genres', 'actors', 'director'] });
+    res.json({ movies });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error while fetching movies' });
+  }
 });
 
 // Route to get movies by genre
-router.get('/genre/:genre', (req, res) => {
+router.get('/genre/:genre', async (req, res) => {
   const genreName = req.params.genre;
 
-  appDataSource
-    .getRepository(Genre)
-    .findOne({ where: { name: genreName }, relations: ['movies'] })
-    .then((genre) => {
-      if (genre) {
-        res.json({ movies: genre.movies });
-      } else {
-        res.status(404).json({ message: 'Genre not found' });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ message: 'Error while fetching movies by genre' });
-    });
+  try {
+    const genre = await appDataSource
+      .getRepository(Genre)
+      .findOne({ where: { name: genreName }, relations: ['movies'] });
+    if (genre) {
+      res.json({ movies: genre.movies });
+    } else {
+      res.status(404).json({ message: 'Genre not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error while fetching movies by genre' });
+  }
 });
 
 // Route to add a new movie
@@ -62,7 +57,6 @@ router.post('/', async (req, res) => {
   } = req.body;
 
   try {
-    // Find director
     const directors = await directorRepository.find({
       where: { id: directorId },
     });
@@ -73,7 +67,6 @@ router.post('/', async (req, res) => {
     }
     const director = directors[0];
 
-    // Find genres
     const foundGenres = await genreRepository.findByIds(genreIds);
     if (foundGenres.length !== genreIds.length) {
       res.status(404).json({ message: 'One or more genres not found' });
@@ -81,7 +74,6 @@ router.post('/', async (req, res) => {
       return;
     }
 
-    // Find actors
     const foundActors = await actorRepository.findByIds(actorIds);
     if (foundActors.length !== actorIds.length) {
       res.status(404).json({ message: 'One or more actors not found' });
@@ -89,7 +81,6 @@ router.post('/', async (req, res) => {
       return;
     }
 
-    // Create new movie
     const newMovie = movieRepository.create({
       name,
       releasedate,
@@ -101,7 +92,6 @@ router.post('/', async (req, res) => {
       actors: foundActors,
     });
 
-    // Save movie
     const savedMovie = await movieRepository.save(newMovie);
 
     res.status(201).json({
@@ -113,86 +103,86 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Error while creating the movie' });
   }
 });
-
-// Route to get a movie by its ID
-router.get('/:id', (req, res) => {
-  const movieRepository = appDataSource.getRepository(Movie);
-  const movieId = req.params.id;
-
-  movieRepository
-    .findOne({
-      where: { id: movieId },
-      relations: ['genres', 'actors', 'director'],
-    })
-    .then((movie) => {
-      if (movie) {
-        res.status(200).json(movie);
-      } else {
-        res.status(404).json({ message: 'Movie not found' });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ message: 'Error while fetching the movie' });
-    });
+// Route to get random movies
+router.get('/random', async (req, res) => {
+  try {
+    const movies = await appDataSource
+      .getRepository(Movie)
+      .find({ relations: ['genres', 'actors', 'director'] });
+    const randomMovies = movies.sort(() => 0.5 - Math.random()).slice(0, 10); // Sélectionner 10 films aléatoires
+    res.json(randomMovies);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error while fetching random movies' });
+  }
 });
 
-// Route to delete a movie by its ID
-router.delete('/:id', (req, res) => {
-  const movieRepository = appDataSource.getRepository(Movie);
+// Route pour mettre à jour le statut 'isliked' d'un film
+router.post('/:id/like', async (req, res) => {
   const movieId = req.params.id;
-
-  movieRepository
-    .findOne({ where: { id: movieId } })
-    .then((movie) => {
-      if (movie) {
-        movieRepository
-          .remove(movie)
-          .then(() => {
-            res.status(200).json({ message: 'Movie successfully deleted' });
-          })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).json({ message: 'Error while deleting the movie' });
-          });
-      } else {
-        res.status(404).json({ message: 'Movie not found' });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ message: 'Error while fetching the movie' });
-    });
-});
-
-// Route to toggle the isliked option for a movie
-router.patch('/liked/:id', async (req, res) => {
-  const movieRepository = appDataSource.getRepository(Movie);
-  const movieId = req.params.id;
+  const { isLiked } = req.body;
 
   try {
-    // Find the movie by id
-    const movie = await movieRepository.findOne({ where: { id: movieId } });
-
+    const movie = await appDataSource
+      .getRepository(Movie)
+      .findOne({ where: { id: movieId } });
     if (!movie) {
-      return res.status(404).json({ message: 'Movie not found' });
+      return res.status(404).json({ message: 'Film non trouvé' });
     }
 
-    // Toggle the isliked property
-    movie.isliked = !movie.isliked;
-
-    // Save the updated movie
-    const updatedMovie = await movieRepository.save(movie);
+    movie.isliked = isLiked;
+    const updatedMovie = await appDataSource.getRepository(Movie).save(movie);
 
     res.status(200).json({
-      message: 'Movie like status successfully updated',
+      message: 'Statut de like du film mis à jour avec succès',
       movie: updatedMovie,
     });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'Error while updating the movie like status' });
+    res.status(500).json({
+      message: 'Erreur lors de la mise à jour du statut de like du film',
+
+    });
+  }
+});
+
+// Route to get a movie by its ID
+router.get('/:id', async (req, res) => {
+  const movieId = req.params.id;
+
+  try {
+    const movie = await appDataSource.getRepository(Movie).findOne({
+      where: { id: movieId },
+      relations: ['genres', 'actors', 'director'],
+    });
+    if (movie) {
+      res.status(200).json(movie);
+    } else {
+      res.status(404).json({ message: 'Movie not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error while fetching the movie' });
+  }
+});
+
+// Route to delete a movie by its ID
+router.delete('/:id', async (req, res) => {
+  const movieId = req.params.id;
+
+  try {
+    const movie = await appDataSource
+      .getRepository(Movie)
+      .findOne({ where: { id: movieId } });
+    if (movie) {
+      await appDataSource.getRepository(Movie).remove(movie);
+      res.status(200).json({ message: 'Movie successfully deleted' });
+    } else {
+      res.status(404).json({ message: 'Movie not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error while deleting the movie' });
   }
 });
 
