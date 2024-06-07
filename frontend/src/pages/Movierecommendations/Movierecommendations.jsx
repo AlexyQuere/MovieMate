@@ -69,7 +69,7 @@ const MovieRecommendations = () => {
     return <div>Génération des recommandations...</div>;
   }
 
-  if (currentMovieIndex >= movies.length && recommendations.length > 0) {
+  if (currentMovieIndex >= movies.length - 1 && recommendations.length > 0) {
     return (
       <div style={{ textAlign: 'center', padding: '20px' }}>
         <h1>Vos recommandations</h1>
