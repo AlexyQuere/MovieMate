@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './Moviegenrecheckbox.css'; // Import the CSS file
 
 const CheckboxExample = ({ setCheckedValue }) => {
   const [genres, setGenres] = useState([]);
@@ -38,12 +39,14 @@ const CheckboxExample = ({ setCheckedValue }) => {
   };
 
   return (
-    <div>
+    <div className="checkbox-container">
+      <h1>Genre</h1>
       {Array.isArray(genres) ? (
         genres.map((genre) => (
           <div key={genre.id}>
             <input
               type="checkbox"
+              id={genre.name}
               name={genre.name}
               checked={!!checkedValues[genre.name]}
               onChange={handleCheckboxChange}

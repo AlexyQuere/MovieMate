@@ -10,13 +10,13 @@
 
 .Link {
   text-decoration: none;
-  color: white;
+  color: black;
   margin: auto;
 }
 
 .Linkhome {
   text-decoration: none;
-  color: white;
+  color: black;
   font-weight: 700;
   font-size: 1.5rem;
 }

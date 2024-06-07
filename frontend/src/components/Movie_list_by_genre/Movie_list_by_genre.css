@@ -5,6 +5,12 @@
   justify-content: space-evenly;
 }
 
+.presentation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .search {
   display: flex;
   align-items: center;

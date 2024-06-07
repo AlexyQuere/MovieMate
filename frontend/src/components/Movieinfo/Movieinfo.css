@@ -12,7 +12,7 @@
 .movieimage img {
   height: 500px;
   border-radius: 20px;
-  margin-left: 3rem;
+  margin-right: 3rem;
   height: 70vh;
 }
 
@@ -50,6 +50,6 @@
 }
 
 .rating-container {
-  width: 100px; /* Adjust the size as needed */
-  margin-top: 1rem;
+  width: 20vh; /* Adjust the size as needed */
+  margin-top: 5rem;
 }
