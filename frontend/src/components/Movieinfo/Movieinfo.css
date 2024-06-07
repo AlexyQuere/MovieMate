@@ -48,3 +48,8 @@
 .movieinfo {
   font-weight: 600;
 }
+
+.rating-container {
+  width: 100px; /* Adjust the size as needed */
+  margin-top: 1rem;
+}
