@@ -1,15 +1,19 @@
-.global {
+.movieinfobox {
   display: flex;
   flex-direction: row;
   margin-top: 3rem;
   gap: 3rem;
 }
 
-.movieimage {
-  width: 40%;
+.movieinfo {
+  margin-top: 2rem;
 }
+
 .movieimage img {
-  height: 550px;
+  height: 500px;
+  border-radius: 20px;
+  margin-right: 3rem;
+  height: 70vh;
 }
 
 .movieinfo {
@@ -43,4 +47,9 @@
 
 .movieinfo {
   font-weight: 600;
+}
+
+.rating-container {
+  width: 20vh; /* Adjust the size as needed */
+  margin-top: 5rem;
 }

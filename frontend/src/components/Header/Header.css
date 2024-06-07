@@ -5,24 +5,24 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  gap: 16rem;
   padding: 5px;
 }
 
 .Link {
   text-decoration: none;
-  color: white;
+  color: black;
   margin: auto;
 }
 
 .Linkhome {
   text-decoration: none;
-  color: white;
+  color: black;
   font-weight: 700;
   font-size: 1.5rem;
 }
 
 .links {
+  margin: auto;
   display: flex;
   flex-direction: row;
   gap: 7rem;
