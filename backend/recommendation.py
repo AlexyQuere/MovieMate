@@ -7,9 +7,6 @@ import json
 BASE_URL = 'http://localhost:8000/movies'
 
 def fetch_popular_movies() -> List[Dict[str, Any]]:
-    """
-    Fetch popular movies from the API.
-    """
     try:
         response = requests.get(f'{BASE_URL}?limit=200')
         response.raise_for_status()
@@ -20,9 +17,7 @@ def fetch_popular_movies() -> List[Dict[str, Any]]:
         sys.exit(1)
 
 def prepare_movie_data(movies: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """
-    Prepare movie data to extract relevant fields.
-    """
+
     movie_data = []
     for movie in movies:
         movie_data.append({
@@ -36,9 +31,7 @@ def prepare_movie_data(movies: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return movie_data
 
 def recommend_movies(user_ratings: Dict[int, bool], movies: List[Dict[str, Any]], num_recommendations: int = 6) -> List[Dict[str, Any]]:
-    """
-    Recommend movies based on user's ratings and movie data.
-    """
+    
     recommendations = []
     user_genres_high = set()
     user_genres_low = set()
@@ -48,7 +41,6 @@ def recommend_movies(user_ratings: Dict[int, bool], movies: List[Dict[str, Any]]
     user_actors_low = set()
     added_movie_ids = set()
 
-    # Utiliser les feedbacks de l'utilisateur pour ajuster les scores des films
     for movie_id, user_rating in user_ratings.items():
         for movie in movies:
             if str(movie['id']) == movie_id:

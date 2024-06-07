@@ -5,12 +5,12 @@ import axios from 'axios';
 import Movie from '../../components/Movieinfo/Movieinfo';
 
 export const Movieinfo = () => {
-  const { movieId } = useParams(); // Destructuring id from useParams
-  const [movie, setMovie] = useState(null); // Changed movies to movie since you're fetching a single movie
+  const { movieId } = useParams();
+  const [movie, setMovie] = useState(null);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/movies/${movieId}`) // Using id instead of param
+      .get(`http://localhost:8000/movies/${movieId}`)
       .then((response) => {
         console.log(response);
         setMovie(response.data);

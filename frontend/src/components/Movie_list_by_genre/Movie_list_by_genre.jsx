@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Movie from '../Moviecard/Moviecard';
 import './Movie_list_by_genre.css';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Movie_list_by_genre = ({ checkedValue }) => {
   const [movies, setMovies] = useState([]);
@@ -42,20 +43,7 @@ const Movie_list_by_genre = ({ checkedValue }) => {
   return (
     <div className="presentation">
       <div className="search">
-        <svg
-          width="30"
-          height="30"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          xml:space="preserve"
-        >
-          <g transform="translate(-783 -563)">
-            <path
-              d="M868.5 638.6 856 626.1C854.3 624.4 852 623.8 849.8 624.2L845.4 619.8C849.3 614.8 851.6 608.4 851.6 601.6 851.6 585.1 838.1 571.6 821.6 571.6 805.1 571.6 791.6 585.1 791.6 601.6 791.6 618.1 805.1 631.6 821.6 631.6 828.4 631.6 834.7 629.3 839.8 625.4L844.2 629.8C843.8 632 844.4 634.3 846.1 636L858.6 648.5C860 649.9 861.8 650.6 863.6 650.6 865.4 650.6 867.2 649.9 868.6 648.5 871.2 645.7 871.2 641.3 868.5 638.6ZM821.5 625.5C808.3 625.5 797.5 614.7 797.5 601.5 797.5 588.3 808.3 577.5 821.5 577.5 834.7 577.5 845.5 588.3 845.5 601.5 845.5 614.7 834.7 625.5 821.5 625.5Z"
-              fill="#FFFFFF"
-            />
-          </g>
-        </svg>
+        <SearchIcon />
         <input
           type="text"
           placeholder="Search for a movie"
@@ -65,7 +53,7 @@ const Movie_list_by_genre = ({ checkedValue }) => {
         />
       </div>
       <div className="moviecardflex">
-        {filteredMovies.slice(startIndex, startIndex + 6).map((movie) => (
+        {filteredMovies.slice(startIndex, startIndex + 8).map((movie) => (
           <Movie key={movie.id} movie={movie} />
         ))}
       </div>

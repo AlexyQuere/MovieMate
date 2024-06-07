@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Moviegenrecheckbox.css'; // Import the CSS file
+import './Moviegenrecheckbox.css';
 
 const CheckboxExample = ({ setCheckedValue }) => {
   const [genres, setGenres] = useState([]);
@@ -10,7 +10,7 @@ const CheckboxExample = ({ setCheckedValue }) => {
       try {
         const response = await fetch('http://localhost:8000/genres');
         const data = await response.json();
-        console.log('Fetched genres:', data.genres); // Log the fetched data
+        console.log('Fetched genres:', data.genres);
         if (Array.isArray(data.genres)) {
           setGenres(data.genres);
         } else {

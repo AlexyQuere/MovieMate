@@ -1,4 +1,3 @@
-// server.js
 import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
@@ -26,19 +25,17 @@ appDataSource
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
-    // Register routes
     app.use('/', indexRouter);
     app.use('/users', usersRouter);
-    app.use('/movies', moviesRouter); // Mise à jour pour gérer les films aléatoires
+    app.use('/movies', moviesRouter);
     app.use('/actors', actorsRouter);
     app.use('/directors', directorsRouter);
     app.use('/genres', genreRouter);
     app.use('/recommendations', recommendationsRouter);
     app.use('/feedback', feedbackRouter);
 
-    // Register 404 middleware and error handler
-    app.use(routeNotFoundJsonHandler); // Ce middleware doit être enregistré après toutes les routes pour gérer correctement les 404
-    app.use(jsonErrorHandler); // Ce gestionnaire d'erreurs doit être enregistré après tous les middlewares pour capturer toutes les erreurs
+    app.use(routeNotFoundJsonHandler);
+    app.use(jsonErrorHandler);
 
     const port = parseInt(process.env.PORT || '8000');
 
