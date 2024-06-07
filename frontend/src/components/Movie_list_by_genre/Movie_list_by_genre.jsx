@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Make sure to import axios if you're using it
-import Movie from '../Movie/Movie';
+import Movie from '../Moviecard/Moviecard';
+import './Movie_list_by_genre.css';
 
 const Movie_list_by_genre = ({ checkedValue }) => {
   const [movies, setMovies] = useState([]);
@@ -20,11 +21,11 @@ const Movie_list_by_genre = ({ checkedValue }) => {
   return (
     <div>
       <h1>Films {checkedValue}</h1>
-      <ul>
+      <div className="moviecardflex">
         {movies.map((movie) => (
           <Movie key={movie.id} movie={movie} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

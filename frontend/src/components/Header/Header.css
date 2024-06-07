@@ -1,16 +1,29 @@
 .Header-container {
+  text-decoration: none;
+  margin-left: 5rem;
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 16rem;
   padding: 5px;
-  font-size: calc(10px + 2vmin);
-}
-
-.Header-container > :not(:last-child) {
-  margin-right: 10px;
 }
 
 .Link {
-  font-weight: 700;
+  text-decoration: none;
   color: white;
+  margin: auto;
+}
+
+.Linkhome {
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  gap: 7rem;
 }
