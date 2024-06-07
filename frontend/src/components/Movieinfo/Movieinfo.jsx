@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Movieinfo.css';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 const Movie = ({ movie }) => {
+  const [rating, setRating] = useState(0);
+
   const actors = movie.actors.slice(0, 3).map((actor) => actor.name);
   const releaseYear = new Date(movie.releasedate).getFullYear();
 
   const actorsString = actors.join(', ');
   const genresString = movie.genres.map((genre) => genre.name).join(', ');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRating(movie.globalrating * 10);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [movie.globalrating]);
 
   return (
     <div className="movieinfobox">
@@ -25,8 +35,8 @@ const Movie = ({ movie }) => {
       </div>
       <div className="rating-container">
         <CircularProgressbar
-          value={movie.globalrating * 10}
-          text={`${movie.globalrating * 10}%`}
+          value={rating}
+          text={`${rating}%`}
           styles={buildStyles({
             textColor: '#000000',
             pathColor: '#008000',

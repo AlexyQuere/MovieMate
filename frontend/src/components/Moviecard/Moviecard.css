@@ -1,22 +1,37 @@
 .movie-card {
-  background-color: black;
-  width: 16rem;
+  position: relative;
+  overflow: hidden;
   border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
 }
 
 .movie-card img {
+  height: 30vh;
   width: 100%;
   object-fit: cover;
-  border-radius: 20px 20px 0px 0px;
+  border-radius: 20px;
+  transition: transform 0.3s ease-in-out;
 }
 
 .movie-card h2 {
-  font-weight: 500;
-  align-items: center;
-  text-decoration: none;
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
+  text-align: center;
+  border-radius: 0 0 20px 20px;
+  transition: bottom 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.movie-card:hover img {
+  transform: scale(1.05);
+}
+
+.movie-card:hover h2 {
+  bottom: 0;
+  opacity: 1;
 }
