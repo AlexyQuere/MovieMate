@@ -35,7 +35,7 @@ def prepare_movie_data(movies: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         })
     return movie_data
 
-def recommend_movies(user_ratings: Dict[int, bool], movies: List[Dict[str, Any]], num_recommendations: int = 10) -> List[Dict[str, Any]]:
+def recommend_movies(user_ratings: Dict[int, bool], movies: List[Dict[str, Any]], num_recommendations: int = 6) -> List[Dict[str, Any]]:
     """
     Recommend movies based on user's ratings and movie data.
     """

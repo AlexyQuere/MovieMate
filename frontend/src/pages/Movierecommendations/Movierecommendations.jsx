@@ -1,6 +1,7 @@
-// src/pages/MovieRecommendations/MovieRecommendations.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 const MovieRecommendations = () => {
   const [movies, setMovies] = useState([]);
@@ -75,9 +76,7 @@ const MovieRecommendations = () => {
         <h1>Vos recommandations</h1>
         <ul>
           {recommendations.map((rec) => (
-            <li key={rec.id}>
-              {rec.name} - Score: {rec.score}
-            </li>
+            <p key={rec.id}>{rec.name}</p>
           ))}
         </ul>
       </div>
@@ -86,23 +85,55 @@ const MovieRecommendations = () => {
 
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
-      <h1>Recommandations de Films</h1>
       {movies.length > 0 && currentMovieIndex < movies.length && (
-        <div>
-          <h2>{movies[currentMovieIndex].name}</h2>
-          <img
-            src={`https://image.tmdb.org/t/p/original/${movies[currentMovieIndex].image}`}
-            alt={movies[currentMovieIndex].name}
-            style={{ width: '300px', height: '450px' }}
-          />
-          <div style={{ margin: '20px' }}>
-            <button
-              onClick={() => handleFeedback(true)}
-              style={{ marginRight: '10px' }}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          <h1>{movies[currentMovieIndex].name}</h1>
+          <div>
+            <img
+              src={`https://image.tmdb.org/t/p/original/${movies[currentMovieIndex].image}`}
+              alt={movies[currentMovieIndex].name}
+              style={{ width: '300px', height: '450px', borderRadius: '4%' }}
+            />
+            <div
+              style={{ margin: '3rem', flexDirection: 'row', display: 'flex' }}
             >
-              J'aime
-            </button>
-            <button onClick={() => handleFeedback(false)}>Je n'aime pas</button>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '4rem',
+                  height: '4rem',
+                  borderRadius: '50%',
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: '1rem',
+                }}
+                onClick={() => handleFeedback(false)}
+              >
+                <ThumbDownIcon style={{ fontSize: '2.5rem', color: 'white' }} />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '4rem',
+                  height: '4rem',
+                  borderRadius: '50%',
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft: '8rem',
+                }}
+                onClick={() => handleFeedback(true)}
+              >
+                <ThumbUpIcon style={{ fontSize: '2.5rem', color: 'white' }} />
+              </div>
+            </div>
           </div>
         </div>
       )}
