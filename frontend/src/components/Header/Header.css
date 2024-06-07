@@ -8,15 +8,18 @@
   padding: 5px;
 }
 
+.Link:hover {
+  text-decoration: underline;
+}
 .Link {
   text-decoration: none;
-  color: black;
+  color: white;
   margin: auto;
 }
 
 .Linkhome {
   text-decoration: none;
-  color: black;
+  color: white;
   font-weight: 700;
   font-size: 1.5rem;
 }
