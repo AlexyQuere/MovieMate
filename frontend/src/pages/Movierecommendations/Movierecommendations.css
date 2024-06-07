@@ -1,0 +1,77 @@
+.responsive-button {
+  padding: 20px 20px;
+  font-size: 32px;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 1000px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.responsive-button:hover {
+  background-color: #444;
+}
+
+.responsive-button:active {
+  background-color: #222;
+  transform: scale(0.95);
+}
+
+.thumb-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: black;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.thumb-icon-container:hover {
+  background-color: #444;
+}
+
+.thumb-icon-container:active {
+  background-color: #222;
+  transform: scale(0.95);
+}
+
+.message {
+  font-size: 3rem;
+  color: white;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+@keyframes swipe-right {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes swipe-left {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.swipe-right {
+  animation: swipe-right 0.5s forwards;
+}
+
+.swipe-left {
+  animation: swipe-left 0.5s forwards;
+}

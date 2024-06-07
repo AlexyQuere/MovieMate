@@ -79,11 +79,9 @@ async function populateDatabase() {
     movie.globalrating = movieDetails.vote_average;
     movie.synopsis = movieDetails.overview;
 
-    // Initialize empty arrays for relations
     movie.genres = [];
     movie.actors = [];
 
-    // Handle genres
     for (const genreData of movieDetails.genres) {
       let genre = await genreRepository.findOne({
         where: { id: genreData.id },
@@ -99,7 +97,6 @@ async function populateDatabase() {
       }
     }
 
-    // Handle actors
     for (const castData of credits.cast) {
       let actor = await actorRepository.findOne({ where: { id: castData.id } });
       if (!actor) {
@@ -113,7 +110,6 @@ async function populateDatabase() {
       }
     }
 
-    // Handle director
     const directorData = credits.crew.find(
       (member) => member.job === 'Director'
     );

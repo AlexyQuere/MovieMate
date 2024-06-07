@@ -22,7 +22,6 @@ function AddUserForm({ onSuccessfulUserCreation }) {
   };
 
   const saveUser = (event) => {
-    // This avoid default page reload behavior on form submit
     event.preventDefault();
 
     setUserCreationError(null);

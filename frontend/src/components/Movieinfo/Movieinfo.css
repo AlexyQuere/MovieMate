@@ -20,8 +20,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 3rem;
-  width: 60%;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  width: 50%;
 }
 
 .movieinfo h1 {
@@ -50,6 +51,6 @@
 }
 
 .rating-container {
-  width: 20vh; /* Adjust the size as needed */
+  width: 15vh; /* Adjust the size as needed */
   margin-top: 5rem;
 }

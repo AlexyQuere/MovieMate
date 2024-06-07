@@ -1,9 +1,8 @@
 import typeorm from "typeorm";
 
 const { MigrationInterface, QueryRunner } = typeorm;
-
-export default class  $npmConfigName1717660770202 {
-    name = ' $npmConfigName1717660770202'
+export default class Migrations1717768250334 {
+    name = 'Migrations1717768250334'
 
     async up(queryRunner) {
         await queryRunner.query(`

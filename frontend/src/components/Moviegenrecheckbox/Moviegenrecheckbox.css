@@ -1,7 +1,7 @@
 .checkbox-container {
   display: flex;
   flex-direction: column;
-  max-height: 40vh; /* Set a max height for the container */
+  max-height: 60vh; /* Set a max height for the container */
   overflow-y: auto; /* Enable vertical scrolling */
   scrollbar-width: thin; /* For Firefox */
   scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1); /* For Firefox */
@@ -24,7 +24,7 @@
 
 .checkbox-container h1 {
   margin-top: 0;
-  margin-bottom: 1rem; /* Adjusted margin */
+  margin-bottom: 2rem; /* Adjusted margin */
   font-weight: 400;
 }
 

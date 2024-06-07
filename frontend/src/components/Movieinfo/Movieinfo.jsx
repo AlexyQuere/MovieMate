@@ -32,17 +32,17 @@ const Movie = ({ movie }) => {
         <h2>Actors : {'  ' + actorsString}</h2>
         <h2>Genres : {'       ' + genresString}</h2>
         <h3>{movie.synopsis}</h3>
-      </div>
-      <div className="rating-container">
-        <CircularProgressbar
-          value={rating}
-          text={`${rating}%`}
-          styles={buildStyles({
-            textColor: '#000000',
-            pathColor: '#008000',
-            trailColor: '#333',
-          })}
-        />
+        <div className="rating-container">
+          <CircularProgressbar
+            value={rating}
+            text={`${rating}%`}
+            styles={buildStyles({
+              textColor: '#000000',
+              pathColor: '#008000',
+              trailColor: '#333',
+            })}
+          />
+        </div>
       </div>
       <div className="movieimage">
         <img
