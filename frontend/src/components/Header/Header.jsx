@@ -7,6 +7,7 @@ const Header = () => {
       <Link className="Linkhome" to="/">
         MovieMate
       </Link>
+
       <div className="links">
         <Link className="Link" to="/">
           HOME
