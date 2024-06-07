@@ -6,20 +6,17 @@
 }
 
 .search {
-  margin: auto;
-  width: max-content;
+  display: flex;
+  align-items: center;
+  width: 70%;
   border-radius: 60px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0)
-  );
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   margin-bottom: 3rem;
+  border: 1px solid;
+}
+
+.search svg {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 input {
@@ -30,4 +27,14 @@ input {
   background: transparent;
   border: none;
   flex: 1;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.arrow-svg {
+  margin: 0 1rem;
 }
