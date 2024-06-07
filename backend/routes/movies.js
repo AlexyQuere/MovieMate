@@ -141,6 +141,7 @@ router.post('/:id/like', async (req, res) => {
     console.error(error);
     res.status(500).json({
       message: 'Erreur lors de la mise à jour du statut de like du film',
+
     });
   }
 });
