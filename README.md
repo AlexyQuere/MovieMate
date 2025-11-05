@@ -1,5 +1,8 @@
 # Movie Mate
 
+A website that helps users choose a movie based on your preferences. It works by selecting favorite films, then an algorithm automatically suggests other movies that might be of interest. The recommendation system takes into account several factors such as the director, genre, cast, and release date.
+
+
 ## Backend
 
 ### Project setup
