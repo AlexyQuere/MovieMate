@@ -8,6 +8,14 @@ A website that helps users choose a movie based on your preferences. It works by
 - Python (version 3.7 or higher)
 - npm (comes with Node.js)
 
+## API Key Setup
+
+To populate the database with movie data, you need an API key from The Movie Database (TMDB).
+
+1. Go to [TMDB](https://www.themoviedb.org/) and create an account.
+2. Go to your account settings > API > Request an API Key.
+3. Copy the API key and add it to the `API_KEY` variable in the `.env` file.
+
 ## Backend
 
 ### Project setup
